@@ -60,18 +60,18 @@ async function recreateDB(){
   await Van.deleteMany(); 
  
   let instance1 = new Van({
-    Name:"Quest",
-    Brand:"Quest",
+    name:"Quest",
+    brand:"Quest",
     price: 25000
   });
   let instance2 = new Van({
-    Name:"Transit Connect",
-    Brand:"Ford",
+    name:"Transit Connect",
+    brand:"Ford",
     price: 35000
   });
   let instance3 = new Van({
-    Name:"Sedona",
-    Brand:"Kia",
+    name:"Sedona",
+    brand:"Kia",
     price: 18000
   }); 
   instance1.save( function(err,doc) { 

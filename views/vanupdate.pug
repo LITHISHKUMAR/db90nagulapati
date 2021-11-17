@@ -1,0 +1,43 @@
+extends layout 
+ 
+block content 
+  h1= title 
+ 
+  - let vanid = toShow._id 
+  - let name = toShow.name 
+  - let vanbrand = toShow.brand 
+  - let vanprice = toShow.price 
+   
+  div.row(class='mb-2') 
+    div.mr-1 ID is 
+    div #{vanid} 
+  - let actionid = "/resource/van/" + vanid 
+  form(id='vanForm', action= actionid, method="PUT") 
+    div.form-group 
+        label.vanAttr(for='name') Van Name 
+        input#name(type='text', name='name', value= name ) 
+    div.form-group 
+        label.vanAttr(for='brand') Van Size 
+        input#brand(type='text', name='brand', value= vanbrand ) 
+    div.form-group 
+        label.vanAttr(for='cost') Van Price 
+        input#price(type='number', name='price', value= vanprice ) 
+    input(type="submit") 
+ 
+  script. 
+    document.forms['vanForm'].addEventListener('submit', (event) => { 
+      event.preventDefault(); 
+      // TODO do something here to show user that form is being submitted 
+      fetch(event.target.action, { 
+        method: 'PUT', 
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form 
+      }).then((resp) => { 
+        return resp.json(); // or resp.text() or whatever the server sends 
+      }).then((body) => { 
+        alert("Update succeded") 
+        // TODO handle body 
+      }).catch((error) => { 
+        // TODO handle error 
+        alert("Update failed " + error ) 
+      }); 
+    });

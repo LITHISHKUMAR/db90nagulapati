@@ -21,9 +21,9 @@ exports.van_create_post = async function(req, res) {
     // Even though bodies can be in many different formats, we will be picky 
     // and require that it be a json object 
 
-    document.Name = req.body.Name; 
-    document.Brand = req.body.Brand; 
-    document.price = req.body.color; 
+    document.name = req.body.name; 
+    document.brand = req.body.brand; 
+    document.price = req.body.price; 
     try{ 
         let result = await document.save(); 
         res.send(result); 
@@ -35,8 +35,16 @@ exports.van_create_post = async function(req, res) {
 };  
  
 // Handle van delete form on DELETE. 
-exports.van_delete = function(req, res) { 
-    res.send('NOT IMPLEMENTED: van delete DELETE ' + req.params.id); 
+exports.van_delete = async function(req, res) { 
+        console.log("delete "  + req.params.id) 
+        try { 
+            result = await Van.findByIdAndDelete( req.params.id) 
+            console.log("Removed " + result) 
+            res.send(result) 
+        } catch (err) { 
+            res.status(500) 
+            res.send(`{"error": Error deleting ${err}}`); 
+        } 
 }; 
  
 // Handle van update form on PUT. 
@@ -46,10 +54,10 @@ exports.van_update_put = async function(req, res) {
         try { 
             let toUpdate = await Van.findById( req.params.id) 
             // Do updates of properties 
-            if(req.body.Name)  
-                   toUpdate.Name = req.body.Name; 
+            if(req.body.name)  
+                   toUpdate.name = req.body.name; 
             if(req.body.price) toUpdate.price = req.body.price; 
-            if(req.body.Brand) toUpdate.Brand = req.body.Brand; 
+            if(req.body.brand) toUpdate.brand = req.body.brand; 
             let result = await toUpdate.save(); 
             console.log("Sucess " + result) 
             res.send(result) 
@@ -81,4 +89,50 @@ exports.van_view_all_Page = async function(req, res) {
         res.status(500); 
         res.send(`{"error": ${err}}`); 
     }   
+}; 
+
+exports.van_view_one_Page = async function(req, res) { 
+    console.log("single view for id "  + req.query.id) 
+    try{ 
+        result = await Van.findById( req.query.id) 
+        res.render('vandetail',  
+{ title: 'Van Detail', toShow: result }); 
+    } 
+    catch(err){ 
+        res.status(500) 
+        res.send(`{'error': '${err}'}`); 
+    } 
+}; 
+exports.van_create_Page =  function(req, res) { 
+    console.log("create view") 
+    try{ 
+        res.render('vancreate', { title: 'Van Create'}); 
+    } 
+    catch(err){ 
+        res.status(500) 
+        res.send(`{'error': '${err}'}`); 
+    } 
+}; 
+exports.van_update_Page =  async function(req, res) { 
+    console.log("update view for item "+req.query.id) 
+    try{ 
+        let result = await Van.findById(req.query.id) 
+        res.render('vanupdate', { title: 'Van Update', toShow: result }); 
+    } 
+    catch(err){ 
+        res.status(500) 
+        res.send(`{'error': '${err}'}`); 
+    } 
+}; 
+exports.van_delete_Page = async function(req, res) { 
+    console.log("Delete view for id "  + req.query.id) 
+    try{ 
+        result = await Van.findById(req.query.id) 
+        res.render('vandelete', { title: 'Van Delete', toShow: 
+result }); 
+    } 
+    catch(err){ 
+        res.status(500) 
+        res.send(`{'error': '${err}'}`); 
+    } 
 }; 
