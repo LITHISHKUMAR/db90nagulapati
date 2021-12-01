@@ -25,8 +25,16 @@ exports.van_create_post = async function(req, res) {
     document.brand = req.body.brand; 
     document.price = req.body.price; 
     try{ 
-        let result = await document.save(); 
-        res.send(result); 
+        if(document.price < 450 || document.price>99999){
+            throw new TypeError("Please add price in between 450 and 99999")
+          }
+          else if(document. brand.length<=0){
+            throw new TypeError("Brand name is Empty")
+          }
+          else{
+            let result = await document.save();
+            res.send(result);
+          } 
     } 
     catch(err){ 
         res.status(500); 
