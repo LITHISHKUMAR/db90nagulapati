@@ -30,7 +30,7 @@ exports.van_create_post = async function(req, res) {
           }
           else if(document. brand.length<=0){
             throw new TypeError("Brand name is Empty")
-          }
+          }          
           else{
             let result = await document.save();
             res.send(result);

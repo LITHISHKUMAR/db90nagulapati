@@ -17,8 +17,8 @@ const secured = (req, res, next) => {
 router.get('/', van_controlers.van_view_all_Page ); 
 
 router.get('/detail', van_controlers.van_view_one_Page); 
-router.get('/create', van_controlers.van_create_Page); 
+router.get('/create',secured, van_controlers.van_create_Page); 
 router.get('/update',secured,  van_controlers.van_update_Page); 
-router.get('/delete', van_controlers.van_delete_Page); 
+router.get('/delete',secured, van_controlers.van_delete_Page); 
 
 module.exports = router;
